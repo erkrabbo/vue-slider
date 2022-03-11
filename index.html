@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Slider Vue</title>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div id="root">
+		<div class="slider">
+			<div class="slide">
+				<img :src="slides[activeIndex].img" alt="slides[activeIndex].title">
+				<div class="slide-contents">
+					<h2 class="slide-title">{{slides[activeIndex].title}}</h2>
+					<p class="slide-text">{{slides[activeIndex].text}}</p>
+				</div>
+			</div>
+
+			<div class="thumbs">
+				<div v-for = "(thumb, index) in slides" :class="activeIndex == index ? ' thumb active' : 'thumb'" @click = "thisActive(index)">
+					<img :src="thumb.img" alt="thumb.title">
+				</div>
+
+				<button class="btn-control btn-previus" @click = "prevSlide">&and;</button>
+				<button class="btn-control btn-next"  @click = "nextSlide">&or;</button>
+
+			</div>
+		</div>
+	</div>
+	<script src="script.js"></script>
+</body>
+</html>
