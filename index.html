@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div id="root">
-		<div class="slider" @mouseOver = "pauseAutoSliding" @mouseOut = "playAutoSliding">
+		<div class="slider" @mouseEnter = "pauseAutoSliding" @mouseLeave = "resumeAutoSliding">
 			<div class="slide">
 				<img :src="slides[activeIndex].img" alt="slides[activeIndex].title">
 				<div class="slide-contents">

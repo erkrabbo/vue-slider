@@ -2,6 +2,11 @@ const slider = new Vue({
     el: '#root',
     data: {
         activeIndex: 0,
+        slideTimer: 0,
+        startTime: 0,
+        pauseTime: 0,
+        intervalTime: 3000,
+        resumeTime: 0,
         slides: [
             {
                 img: 'img/01.jpg',
@@ -29,7 +34,6 @@ const slider = new Vue({
                 text: 'Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam inventore eligendi ex ad ullam,',
             },
         ],
-        slideTimer: null,
 },
 methods:{
     prevSlide(){
@@ -48,10 +52,19 @@ methods:{
         this.activeIndex = index;
     },
     pauseAutoSliding(){
+        this.pauseTime = new Date();
+        this.resumeTime = (this.intervalTime - (this.pauseTime - this.startTime));
+
         clearInterval(this.slideTimer);
+        this.slideTimer = 0;
     },
     playAutoSliding(){
-        this.slideTimer = setInterval(this.nextSlide, 3000);
+        this.startTime = new Date();
+        this.slideTimer = setInterval(this.nextSlide, this.intervalTime);
+    },
+    resumeAutoSliding(){
+        setTimeout(this.nextSlide, this.resumeTime);
+        setTimeout(this.playAutoSliding, this.resumeTime);
     }
 },
 mounted(){
