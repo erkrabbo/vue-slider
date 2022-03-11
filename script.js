@@ -28,7 +28,8 @@ const slider = new Vue({
                 title: 'Paradise',
                 text: 'Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam inventore eligendi ex ad ullam,',
             },
-        ]
+        ],
+        slideTimer: null,
 },
 methods:{
     prevSlide(){
@@ -46,9 +47,14 @@ methods:{
     thisActive(index){
         this.activeIndex = index;
     },
+    pauseAutoSliding(){
+        clearInterval(this.slideTimer);
+    },
+    playAutoSliding(){
+        this.slideTimer = setInterval(this.nextSlide, 3000);
+    }
 },
 mounted(){
-    console.log('ciao')
-    setInterval(this.nextSlide, 3000);
+    this.playAutoSliding();
 }
 })
