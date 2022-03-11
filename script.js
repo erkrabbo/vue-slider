@@ -31,13 +31,13 @@ const slider = new Vue({
         ]
 },
 methods:{
-    prevSlide (){
+    prevSlide(){
         this.activeIndex--;
         if (this.activeIndex < 0){
             this.activeIndex = this.slides.length - 1;
         }
     },
-    nextSlide (){
+    nextSlide(){
         this.activeIndex++;
         if (this.activeIndex == this.slides.length){
             this.activeIndex = 0;
@@ -45,6 +45,10 @@ methods:{
     },
     thisActive(index){
         this.activeIndex = index;
-    }
+    },
+},
+mounted(){
+    console.log('ciao')
+    setInterval(this.nextSlide, 3000);
 }
 })
