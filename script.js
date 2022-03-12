@@ -2,11 +2,8 @@ const slider = new Vue({
     el: '#root',
     data: {
         activeIndex: 0,
-        slideTimer: 0,
         startTime: 0,
-        pauseTime: 0,
-        intervalTime: 3000,
-        resumeTime: 0,
+        slideTimer : 0,
         slides: [
             {
                 img: 'img/01.jpg',
@@ -44,6 +41,7 @@ methods:{
     },
     nextSlide(){
         this.activeIndex++;
+        this. startTime = new Date();
         if (this.activeIndex == this.slides.length){
             this.activeIndex = 0;
         }
@@ -51,21 +49,45 @@ methods:{
     thisActive(index){
         this.activeIndex = index;
     },
-    pauseAutoSliding(){
-        this.pauseTime = new Date();
-        this.resumeTime = (this.intervalTime - (this.pauseTime - this.startTime));
-
-        clearInterval(this.slideTimer);
-        this.slideTimer = 0;
-    },
     playAutoSliding(){
+        let intervalTime = 3000;
+        let resumeTime = 0;
+        let state = 0;
         this.startTime = new Date();
-        this.slideTimer = setInterval(this.nextSlide, this.intervalTime);
+        this.slideTimer = setInterval(this.nextSlide, intervalTime);
+        console.log(this.startTime, resumeTime, state)
+        state = 1;
+
+        this.pauseAutoSliding = function (){
+            if (state != 1){
+                return;
+            }
+            resumeTime = (intervalTime - (new Date() - this.startTime));
+    
+            clearInterval(this.slideTimer);
+            console.log(this.startTime, resumeTime, state)
+            state = 2;
+        }
+        this.timeoutCallback = function (){
+            if (state != 3){
+                return;
+            }
+            slider.nextSlide();
+    
+            this.startTime = new Date();
+            slider.playAutoSliding();
+            console.log(this.startTime, resumeTime, state)
+            state = 1
+        }
+        this.resumeAutoSliding = function (){
+            if (state != 2){
+                return;
+            }
+            console.log(this.startTime, resumeTime, state)
+            state = 3;
+            setTimeout(this.timeoutCallback, resumeTime);
+        }
     },
-    resumeAutoSliding(){
-        setTimeout(this.nextSlide, this.resumeTime);
-        setTimeout(this.playAutoSliding, this.resumeTime);
-    }
 },
 mounted(){
     this.playAutoSliding();
